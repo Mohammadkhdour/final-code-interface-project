@@ -57,7 +57,7 @@ This project implements an autonomous robot that solves a maze using the **Right
 ### **1. Clone the Repository**
 
 ```bash
-git clone https://github.com/yourusername/maze-solving-robot.git
+git clone https://github.com/mohammadkhdour/maze-solving-robot.git
 cd maze-solving-robot
 ```
 
