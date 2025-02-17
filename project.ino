@@ -75,43 +75,56 @@ double setPoint1 = 0;   // Set target angle (0 for forward)
 PID pid2(&Input, &Output, &setPoint1, KP, KI, KD, DIRECT); // Using the PID library
 
 
-// void moveForward(int delayTime) {
-//     // Reset encoder count to track this movement
+// void moveForward(int speed) {
+//     // Reset encoder counts
+//     leftEncoderCount = 0;
+//     rightEncoderCount = 0;
+
+//     Serial.println("Moving Forward...");
     
-//     // Move both motors forward at equal speed
-//     digitalWrite(IN1, HIGH);
-//     digitalWrite(IN2, LOW);
-//     digitalWrite(IN3, HIGH);
-//     digitalWrite(IN4, LOW);
-//   analogWrite(ENA, 140 - Output);
-//   analogWrite(ENB, 140 + Output);
-//   setPoint1 = 0;
-//    float time1 = millis() + delayTime;
+//     while (leftEncoderCount < TARGET_COUNT || rightEncoderCount < TARGET_COUNT) {
+//         input = getAngleZ();  // Get current heading (angleZ)
+//         error = setPoint1 - input; // Compute error
 
-//     while(true){
-      
-//       if(millis() > time1){
-//         break;
-//       }
-//   Input = getAngle();  // Replace with actual sensor reading code
-  
-//   pid2.Compute();
+//         // If error exceeds ±1 degree, apply correction
+//         if (abs(error) > 1) {
+//             pid2.Compute();  // Compute PID correction
 
-//   // Apply motor speeds
-//   analogWrite(ENA, output);
-//   analogWrite(ENB, output);
-  
+//             // Adjust speeds dynamically based on PID output
+//             int leftSpeed = speed - output;  // Reduce left speed if needed
+//             int rightSpeed = speed + output; // Increase right speed if needed
 
-//   // Delay for the loop (PID tuning)
-//   delay(LoopDelayTime);  // Convert seconds to milliseconds
+//             // Constrain values
+//             leftSpeed = constrain(leftSpeed, 0, 255);
+//             rightSpeed = constrain(rightSpeed, 0, 255);
 
+//             // Move forward with adjusted speeds
+//             analogWrite(ENA, leftSpeed);
+//             analogWrite(ENB, rightSpeed);
 
-//   }
-    
-//     Serial.println("Moving forward...");
-    
-//     // Wait until the robot has moved 20 cm (180 encoder pulses)
-    
+//             digitalWrite(IN1, HIGH);
+//             digitalWrite(IN2, LOW);
+//             digitalWrite(IN3, HIGH);
+//             digitalWrite(IN4, LOW);
+//         }
+
+//         Serial.print("Encoders - Left: ");
+//         Serial.print(leftEncoderCount);
+//         Serial.print(" | Right: ");
+//         Serial.print(rightEncoderCount);
+//         Serial.print(" | AngleZ: ");
+//         Serial.print(input);
+//         Serial.print(" | Error: ");
+//         Serial.print(error);
+//         Serial.print(" | Correction: ");
+//         Serial.println(output);
+
+//         delay(10);  // Small delay for stability
+//     }
+
+//     // Stop motors when target count is reached
+//     stopMotors();
+//     Serial.println("Forward movement completed.");
 // }
 
 //Motor control functions
